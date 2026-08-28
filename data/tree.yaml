@@ -1,24 +1,68 @@
 # Provide explicit overrides for how file and directory nodes
 # render in the left navigation menu.
+#
+# Keys are file/directory basenames, so a single entry covers every version of
+# the docs. The navigation is part of the site chrome and is therefore in
+# Chinese even for the versions whose pages are still the English originals.
+# A key present here bypasses the humanize/title + regex_renames path below.
 renames:
-  man: "Manual pages"
+  # sections
+  man: "手册页"
+  cri: "CRI"
+  snapshotters: "snapshotter"
+  user-namespaces: "用户命名空间"
+  design: "设计"
+  historical: "历史文档"
+  reports: "报告"
+  security: "安全"
+
+  # pages
+  README: "README"
+  getting-started: "快速开始"
+  ops: "运行与运维"
+  namespaces: "命名空间"
+  mounts: "挂载"
+  content-flow: "内容流转"
+  garbage-collection: "垃圾回收"
+  transfer: "Transfer 服务"
+  sandbox-api: "Sandbox API"
+  runtime-v2: "Runtime v2"
+  stream_processors: "流处理器"
+  tracing: "链路追踪"
+  rootless: "Rootless 模式"
+  hosts: "Registry 主机配置"
+  image-verification: "镜像验签"
+  managed-opt: "托管 opt 目录"
+  client-opts: "客户端选项"
+  containerd-2.0: "containerd 2.0"
+  features: "特性支持"
+  installation: "安装"
+  architecture: "架构"
+  config: "配置"
+  registry: "Registry 配置"
+  decryption: "镜像解密"
+  testing: "测试"
+  blockfile: "blockfile"
+  devmapper: "devmapper"
+  erofs: "erofs"
+  fsverity: "fsverity"
+  remote-snapshotter: "远程 snapshotter"
   containerd-config.8: "containerd-config(8)"
   containerd-config.toml.5: "containerd-config.toml(5)"
-  getting-started: "Getting Started"
-  content-flow: "Content Flow"
-  client-opts: "Client Opts"
-  containerd-2.0: "containerd 2.0"
-  image-verification: "Image Verification"
-  managed-opt: "Managed Opt"
-  cri: "CRI"
+  OPERATOR_GUIDELINES: "运维人员指南"
+  THREAT_MODEL: "威胁模型"
+  TRIAGE_GUIDE: "问题分诊指南"
+  PLUGINS: "插件"
+  NRI: "NRI"
+  RUNC: "runc"
+
+  # bare acronyms that would otherwise be title-cased
   api: "API"
   os: "OS"
   nri: "NRI"
   crictl: "crictl"
-  erofs: "erofs"
   containerd: "containerd"
   runc: "runc"
-  PLUGINS: "Plugins"
 
 # Globally applied regex replacements acting across auto-generated title strings
 # e.g., scanning multi-word strings and ensuring brand acronyms are fixed contextually

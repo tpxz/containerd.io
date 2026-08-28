@@ -1,0 +1,17 @@
+{{- /*
+  Returns the docs version segment ("2.3", "main", ...) for the given page, or
+  "" for the /docs/ landing page.
+
+  It must not split .RelPermalink directly: when the site is published under a
+  sub-path (baseURL ".../containerd.io/"), RelPermalink carries that prefix and
+  index 1 would be "docs" instead of the version. site.Home.RelPermalink is that
+  prefix ("/containerd.io/", or "/" without a sub-path), so strip it first.
+  `relURL "/"` cannot be used here -- Hugo returns "/" for it verbatim.
+*/ -}}
+{{- $sitePath := strings.TrimPrefix site.Home.RelPermalink .RelPermalink -}}
+{{- $parts := split (trim $sitePath "/") "/" -}}
+{{- $xVersion := "" -}}
+{{- if gt (len $parts) 1 -}}
+  {{- $xVersion = index $parts 1 -}}
+{{- end -}}
+{{- return $xVersion -}}

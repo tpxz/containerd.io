@@ -13,6 +13,7 @@ resources/
 bin/
 tmp/
 
-# Documentation synced from other repos
-static/docs/*
-content/docs/*/
+# Documentation imported from the containerd submodules.
+# NOTE: unlike upstream, this fork commits content/docs/ and static/docs/ --
+# the Chinese translation lives in content/docs/ and has to survive a fresh
+# clone. Re-import with `make materialize-docs` only when bumping upstream.

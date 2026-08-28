@@ -1,23 +1,39 @@
+{{- /* getJSON was removed in Hugo 0.123; fetch the release list with
+       resources.GetRemote instead and degrade gracefully when GitHub is
+       unreachable or rate-limits the build. */ -}}
 {{- $releasesUrl := "https://api.github.com/repos/containerd/containerd/releases?per_page=50&page=1" }}
 {{- $downloadUrl := "https://github.com/containerd/containerd/releases/download" }}
-{{- $releases    := getJSON $releasesUrl }}
 {{- $latest      := .Site.Params.versions.latest }}
+{{- $releases    := slice }}
+{{- with try (resources.GetRemote $releasesUrl) }}
+  {{- with .Err }}
+    {{- warnf "releases shortcode: %s" . }}
+  {{- else with .Value }}
+    {{- $releases = .Content | transform.Unmarshal }}
+  {{- end }}
+{{- end }}
+{{- if not $releases }}
+<div class="notification is-warning is-light">
+  构建时未能从 GitHub 获取版本列表，请前往
+  <a href="https://github.com/containerd/containerd/releases">containerd releases</a> 页面查看完整的下载列表。
+</div>
+{{- else }}
 <table>
   <thead>
     <tr>
       <th>
         <span class="is-size-4 is-size-5-mobile">
-          Version
+          版本
         </span>
       </th>
       <th>
         <span class="is-size-4 is-size-5-mobile">
-          Copy link
+          复制链接
         </span>
       </th>
       <th>
         <span class="is-size-4 is-size-5-mobile">
-          Direct download
+          直接下载
         </span>
       </th>
     </tr>
@@ -43,7 +59,7 @@
 
           {{- if $isLatest }}
           <span class="tag is-medium is-success">
-            LATEST
+            最新
           </span >
           {{- end }}
         </div>
@@ -55,7 +71,7 @@
               <i class="fas fa-clipboard-list"></i>
             </span>
             <span>
-              Binaries (<strong>.tar.gz</strong>)
+              二进制包（<strong>.tar.gz</strong>）
             </span>
           </a>
           <a class="button is-light is-clipboard" data-clipboard-action="copy" data-clipboard-text="{{ $zipUrl }}">
@@ -63,7 +79,7 @@
               <i class="fas fa-clipboard-list"></i>
             </span>
             <span>
-              Source (<strong>.zip</strong>)
+              源码（<strong>.zip</strong>）
             </span>
           </a>
           <a class="button is-light is-clipboard" data-clipboard-action="copy" data-clipboard-text="{{ $tarUrl }}">
@@ -71,7 +87,7 @@
               <i class="fas fa-clipboard-list"></i>
             </span>
             <span>
-              Source (<strong>.tar.gz</strong>)
+              源码（<strong>.tar.gz</strong>）
             </span>
           </a>
         </div>
@@ -83,7 +99,7 @@
               <i class="fas fa-arrow-alt-circle-down"></i>
             </span>
             <span>
-              Binaries (<strong>.tar.gz</strong>)
+              二进制包（<strong>.tar.gz</strong>）
             </span>
           </a>
           <a class="button is-light" href="{{ $zipUrl }}" download>
@@ -91,7 +107,7 @@
               <i class="fas fa-arrow-alt-circle-down"></i>
             </span>
             <span>
-              Source (<strong>.zip</strong>)
+              源码（<strong>.zip</strong>）
             </span>
           </a>
           <a class="button is-light" href="{{ $tarUrl }}" download>
@@ -99,7 +115,7 @@
               <i class="fas fa-arrow-alt-circle-down"></i>
             </span>
             <span>
-              Source (<strong>.tar.gz</strong>)
+              源码（<strong>.tar.gz</strong>）
             </span>
           </a>
         </div>
@@ -108,3 +124,4 @@
     {{- end }}
   </tbody>
 </table>
+{{- end }}

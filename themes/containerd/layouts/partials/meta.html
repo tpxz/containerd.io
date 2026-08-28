@@ -18,7 +18,7 @@
 <meta property="og:type" content="documentation">
 {{- end }}
 <meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 {{- if not $isHome }}
 <meta property="og:site_name" content="{{ .Site.Title }}">
 {{- end }}
@@ -37,5 +37,5 @@
 <meta name="twitter:creator" content="@{{ $twitterHandle }}">
 
 <link rel="canonical" href="{{ .Permalink }}">
-<link rel="shortcut icon" href="/favicon.png" type="image/png">
+<link rel="shortcut icon" href="{{ "favicon.png" | relURL }}" type="image/png">
 {{ hugo.Generator }}

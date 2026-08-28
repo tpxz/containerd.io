@@ -28,18 +28,18 @@
 
     <div class="navbar-menu" id="navbarMenu">
       <div class="navbar-end">
-        <a class="navbar-item has-text-weight-bold" href="/downloads">
-          Downloads
+        <a class="navbar-item has-text-weight-bold" href="{{ "downloads" | relURL }}">
+          下载
         </a>
 
         <div class="navbar-item is-hoverable has-dropdown has-text-weight-bold">
-          <a class="navbar-link" href="/docs/{{ .Site.Params.versions.latestdir }}/">
-            Docs
+          <a class="navbar-link" href="{{ printf "docs/%s/" .Site.Params.versions.latestdir | relURL }}">
+            文档
           </a>
           <div class="navbar-dropdown">
             {{- range .Site.Params.versions.all }}
-            <a class="navbar-item" href="/docs/{{ . }}/">
-              {{ . }}
+            <a class="navbar-item" href="{{ printf "docs/%s/" . | relURL }}">
+              {{ . }}{{ if in $.Site.Params.versions.translated . }}（中文）{{ end }}
             </a>
             {{- end }}
           </div>
@@ -47,12 +47,12 @@
 
         <div class="navbar-item is-hoverable has-dropdown has-text-weight-bold">
           <div class="navbar-link">
-            Project
+            项目
           </div>
 
           <div class="navbar-dropdown is-right">
             <a class="navbar-item" href="https://github.com/cncf/foundation/blob/master/code-of-conduct.md">
-              Code of conduct
+              行为准则
             </a>
 
             {{- range $projectPages }}
@@ -62,7 +62,11 @@
             {{- end }}
 
             <a class="navbar-item" href="https://github.com/cncf/artwork/blob/master/examples/graduated.md#containerd-logos">
-              containerd branding
+              containerd 品牌标识
+            </a>
+
+            <a class="navbar-item" href="{{ .Site.Params.upstreamUrl }}" target="_blank" rel="noopener">
+              英文官网
             </a>
           </div>
         </div> <!-- .navbar-item -->

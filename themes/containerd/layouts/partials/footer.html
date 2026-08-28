@@ -18,7 +18,7 @@
       
        <div class="column">
         <span class="is-size-4 is-size-5-mobile">
-          Docs
+          文档
         </span>
 
         <hr class="hr has-background-grey">
@@ -26,7 +26,7 @@
         <ul>
           {{- range .Site.Params.versions.all }}
           <li>
-            <a href="/docs/{{ . }}/">
+            <a href="{{ printf "docs/%s/" . | relURL }}">
               {{ if eq . "main" }}main{{ else }}{{ . }}.x{{ end }}
             </a>
           </li>
@@ -36,7 +36,7 @@
 
       <div class="column">
         <span class="is-size-4 is-size-5-mobile">
-          Project
+          项目
         </span>
 
         <hr class="hr has-background-grey">
@@ -44,7 +44,7 @@
         <ul>
           <li>
             <a href="https://github.com/cncf/foundation/blob/master/code-of-conduct.md">
-              Code of conduct
+              行为准则
             </a>
           </li>
 
@@ -60,7 +60,7 @@
 
       <div class="column">
         <span class="is-size-4 is-size-5-mobile">
-          Community
+          社区
         </span>
 
         <hr class="hr has-background-grey">
@@ -129,14 +129,20 @@
 
   <div class="container has-text-centered">
     <div class="has-text-weight-light">
+      <p class="is-size-6 is-size-7-mobile">
+        本站是 <a href="{{ .Site.Params.upstreamUrl }}" target="_blank" rel="noopener">containerd.io</a> 的<strong>非官方</strong>中文翻译站，由机器翻译生成，仅供参考。内容以英文原文为准。
+      </p>
+
+      <br />
+
       <p class="is-size-5 is-size-6-mobile">
-        &copy; containerd Authors {{ $year }} | Documentation Distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a>
+        &copy; containerd Authors {{ $year }} ｜ 文档以 <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a> 协议分发
       </p>
 
       <br />
 
       <p>
-        &copy; {{ $year }} The Linux Foundation. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage">Trademark Usage</a> page.
+        &copy; {{ $year }} The Linux Foundation。保留所有权利。The Linux Foundation 拥有注册商标并使用商标，其商标清单请见 <a href="https://www.linuxfoundation.org/trademark-usage">Trademark Usage</a> 页面。
       </p>
     </div>
   </div> <!-- .container -->

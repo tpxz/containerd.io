@@ -1,0 +1,33 @@
+{{- /*
+  Renders the per-page links back to the upstream English sources:
+  the rendered page on containerd.io and the markdown file on GitHub.
+  Auto-generated section _index.md files have no upstream source, so they are
+  skipped.
+*/ -}}
+{{- $xVersion := partial "docs/version.html" . -}}
+{{- if ne $xVersion "" -}}
+  {{- $branch := cond (eq $xVersion "main") "main" (printf "release/%s" $xVersion) -}}
+  {{- $relPath := strings.TrimPrefix (printf "docs/%s/" $xVersion) .File.Path -}}
+
+  {{- $isGenerated := false -}}
+  {{- if and (hasSuffix .File.Path "_index.md") (ne $relPath "_index.md") -}}
+    {{- $isGenerated = true -}}
+  {{- end -}}
+
+  {{- if not $isGenerated -}}
+    {{- $sourcePath := cond (eq $relPath "_index.md") "README.md" (printf "docs/%s" $relPath) -}}
+    {{- $editUrl := printf "https://github.com/containerd/containerd/edit/%s/%s" $branch $sourcePath -}}
+    {{- $sitePath := strings.TrimPrefix site.Home.RelPermalink .RelPermalink -}}
+    {{- $upstreamUrl := printf "%s/%s" (strings.TrimSuffix "/" .Site.Params.upstreamUrl) $sitePath -}}
+
+    <div class="has-text-right mb-3">
+      <a href="{{ $upstreamUrl }}" target="_blank" rel="noopener" class="is-size-6">
+        <span class="icon is-small"><i class="fas fa-language"></i></span> 英文原文
+      </a>
+      <span class="is-size-6 mx-2">·</span>
+      <a href="{{ $editUrl }}" target="_blank" rel="noopener" class="is-size-6">
+        <span class="icon is-small"><i class="fas fa-edit"></i></span> 编辑英文原文
+      </a>
+    </div>
+  {{- end -}}
+{{- end -}}

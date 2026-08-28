@@ -20,30 +20,30 @@
       <br />
 
       <div class="buttons is-centered">
-        <a class="button is-medium is-radiusless is-borderless has-text-weight-bold" href="/docs/{{ .Site.Params.versions.latestdir }}/getting-started/">
+        <a class="button is-medium is-radiusless is-borderless has-text-weight-bold" href="{{ printf "docs/%s/getting-started/" .Site.Params.versions.latestdir | relURL }}">
           <span class="icon">
             <i class="fas fa-sm fa-step-forward"></i>
           </span>
           <span>
-            Getting started
+            快速开始
           </span>
         </a>
 
-        <a class="button is-dark is-outlined is-inverted is-radiusless" href="/docs/{{ .Site.Params.versions.latestdir }}/">
+        <a class="button is-dark is-outlined is-inverted is-radiusless" href="{{ printf "docs/%s/" .Site.Params.versions.latestdir | relURL }}">
           <span class="icon">
             <i class="fas fa-sm fa-info"></i>
           </span>
           <span>
-            Docs
+            文档
           </span>
         </a>
 
-        <a class="button is-orange is-radiusless" href="/downloads">
+        <a class="button is-orange is-radiusless" href="{{ "downloads" | relURL }}">
           <span class="icon">
             <i class="fas fa-file-download"></i>
           </span>
           <span>
-            Downloads
+            下载
           </span>
         </a>
       </div>
@@ -80,7 +80,7 @@
     <div class="columns">
       <div class="column is-one-quarter">
         <p class="is-size-3 is-size-4-mobile has-text-weight-semibold">
-          Features
+          特性
         </p>
 
         <hr class="short-hr is-black" />
@@ -118,7 +118,7 @@
     <div class="columns">
       <div class="column is-3">
         <p class="is-size-3 is-size-4-mobile has-text-weight-semibold">
-          Adopters
+          采用者
         </p>
 
         <hr class="short-hr is-black" />
@@ -143,12 +143,12 @@
 <section class="section is-light-grey has-text-centered is-cncf-section" id="cncf">
   <div class="container">
     <p class="title is-spaced is-size-4 is-size-5-mobile">
-      containerd is a <a href="https://cncf.io">Cloud Native Computing Foundation</a> graduated project
+      containerd 是 <a href="https://cncf.io">云原生计算基金会（CNCF）</a>的毕业项目
     </p>
 
     <br />
 
-    <img src="/img/logos/cncf.png" class="is-cncf-logo" alt="Cloud Native Computing Foundation logo">
+    <img src="{{ "img/logos/cncf.png" | relURL }}" class="is-cncf-logo" alt="Cloud Native Computing Foundation logo">
   </div>
 </section>
 {{ end }}

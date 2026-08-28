@@ -1,20 +1,20 @@
 ---
-title: containerd overview
-short: Overview
+title: containerd 概览
+short: 概览
 weight: 1
 ---
 
-## Overview
+## 概览 {#overview}
 
-Welcome to the containerd documentation! This document contains some basic project-level information about containerd.
+欢迎阅读 containerd 文档！本文档包含一些关于 containerd 的基础项目级信息。
 
-If you'd like to get started running containerd locally on your machine, see the [getting started](#getting-started) guide.
+如果你想在本机上开始运行 containerd，请参阅[快速开始](#getting-started)指南。
 
-## Repositories
+## 仓库 {#repositories}
 
-The containerd project is encapsulated in a variety of GitHub repositories; see https://github.com/containerd .
+containerd 项目由多个 GitHub 仓库组成；参见 https://github.com/containerd 。
 
-## Getting Started
+## 快速开始 {#getting-started}
 
 - [main](main/getting-started/)
 - [2.3.x](2.3/getting-started/)

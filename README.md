@@ -1,113 +1,115 @@
-# containerd website
+# containerd.io 中文站（非官方）
 
-The containerd website can be accessed at https://containerd.io. This site includes the containerd [documentation](https://containerd.io/docs) as well as general project information and more.
+这是 [containerd.io](https://containerd.io) 官方站点仓库的一个中文翻译分支，
+构建产物部署在 <https://docs.foyoux.dpdns.org:44443/containerd.io/>。
 
-The containerd site is built using the [Hugo](https://gohugo.io) static site generator and published using [Netlify](https://netlify.com).
+翻译由机器生成，**非官方、无保证，内容以英文原文为准**。
 
-## Running locally
+## 与上游的差异
 
-In order to run the site locally, you'll need to install the version of Hugo specified using the `HUGO_VERSION` environment variable in [`netlify.toml`](netlify.toml). Instructions can be found in the [official Hugo documentation](https://gohugo.io/getting-started/installing/).
+| | 上游 containerd/containerd.io | 本仓库 |
+| --- | --- | --- |
+| `baseURL` | `https://containerd.io` | `https://docs.foyoux.dpdns.org:44443/containerd.io/`（子路径部署） |
+| 发布方式 | Netlify 自动构建 | `make deploy`，经 ssh 推送静态文件 |
+| `content/docs/` | 由 `make refresh-docs` 在每次构建前重新生成，不入库 | **纳入版本管理**，因为翻译就在这里 |
+| 语言 | 英文 | 站点界面 + 2.3 文档为简体中文，其余版本仍是英文原文 |
 
-Once you have the proper Hugo version installed, install this package and its dependencies with:
+已翻译的范围由 `config.toml` 的 `params.versions.translated` 声明，目前只有 `2.3`。
+未翻译的版本页面顶部会显示提示条。
 
-```shell
+## 翻译约定
+
+见 [`tools/translation-guide.md`](tools/translation-guide.md)。最关键的一条：
+**每个被翻译的标题都要用 `{#原英文锚点}` 保留原来的锚点 id**，否则站内、站外
+所有指向 `#getting-started` 这类锚点的链接都会失效。
+
+用下面的命令核对——它会把每个译文的锚点集合与 `containerd-2.3/docs/` 里的英文
+原文逐一对比，报告丢失的锚点和失效的页内链接：
+
+```bash
+python tools/check-anchors.py 2.3
+```
+
+## 本地运行
+
+需要 Hugo extended（本仓库在 0.165 上验证过；上游 `netlify.toml` 固定的
+0.116 已不适用，主题里的 `getJSON`、`.Site.IsServer` 等写法已按新版改过）。
+
+```bash
 npm install .
 ```
 
-Finally, run:
-
-```shell
+```bash
 make serve
 ```
 
-This will run Hugo in "watch" mode. You can open up your browser to http://localhost:1313 to see the rendered site. The site auto-refreshes when you modify files locally.
+浏览器打开 <http://localhost:1313/containerd.io/>。注意站点带 `/containerd.io/`
+子路径，直接访问 <http://localhost:1313/> 会 404。
 
-## Publishing the site
+## 构建与部署
 
-The site is published automatically by Netlify. Whenever changes are merged to the `main` branch, Netlify will build and deploy the site to the https://containerd-io.netlify.com address (which is mapped to the containerd.io address via DNS). The site *cannot be published manually*.
-
-## Deploy previews
-
-Whenever you submit a pull request to this repo, Netlify will automatically create a [deploy preview](https://www.netlify.com/blog/2016/07/20/introducing-deploy-previews-in-netlify/) with the requested changes. The URL for the deploy preview is:
-
-```
-https://deploy-preview-${PULL_REQUEST_NUMBER}--containerd-io.netlify.com/
+```bash
+make deploy
 ```
 
-The deploy preview URL for pull request number 100, for example, would be:
+等价于 `make clean production-build` 后执行
+[`tools/deploy.sh`](tools/deploy.sh)：把 `public/` 打包经 ssh 传到
+`mycaddy:/srv/docs/containerd.io`，在远端解包到临时目录后再原子替换线上目录，
+上一版保留在 `/srv/docs/containerd.io.previous`。
 
-```
-https://deploy-preview-100--containerd-io.netlify.com/
-```
+目标主机和路径可以覆盖：
 
-You can also access the deploy preview for a pull request by clicking **Show all checks** and then **Details** (next to the **deploy/netlify** check).
-
-## Contributing to the documentation
-
-The source of truth for containerd's documentation is the [`docs folder`](https://github.com/containerd/containerd/tree/main/docs) in the containerd/containerd repo. Documentation is syncronized to this repo daily using the [Sync-Documentation](/.github/workflows/sync-documentation.yml) workflow.
-
-### Adding new docs
-
-All of containerd's documentation is written in [GitHub-flavored Markdown](https://github.github.com/gfm/). To create a new doc, add a Markdown file in the [`docs folder`](https://github.com/containerd/containerd/tree/main/docs) in the containerd/containerd repo, and it will automatically be cloned into this repo. **DO NOT WRITE DOCUMENTATION DIRECTLY TO THIS REPO -- IT WILL BE DELETED BY THE SYNC-DOCUMENTATION WORKFLOW.**
-
-The name, path, and release branch of the file in the containerd/containerd repo will determine its URL on this site. For example, a document committed to `https://github.com/containerd/containerd/blob/release/1.7/docs/NRI.md` would be available at `https://containerd.io/docs/v1.7.x/nri/`.
-
-Once you've added the doc you'll need to add the following page metadata at the top, as YAML:
-
-* The `title` of the page
-* The `weight` of the page. This determines where in the documentation nav the doc appears. Docs with higher weight will be "lower" in the nav. Check the `weight` parameter of other docs to see where your new doc should fit in, and don't hesitate to modify the weight of other docs if the ordering needs to be changed.
-
-Here's an example:
-
-```yaml
----
-title: containerd client libraries
-weight: 5
----
+```bash
+make deploy DEPLOY_HOST=myhost DEPLOY_PATH=/srv/docs/containerd.io
 ```
 
-> Technically Hugo also supports [JSON](http://json.org/) and [TOML](https://github.com/toml-lang/toml) for metadata, but please use YAML only for the sake of consistency.
+只想构建不部署：
 
-Here are some optional parameters:
-
-* A `description` will show up underneath the doc's title at the top of the page. `description`s can be Markdown.
-* If you add `draft: true` to a page's metadata, it will be rendered when you [run the site locally](#running-locally) and in [deploy preview](#deploy-previews) but not on the production site at https://containerd.io. Drafts can be useful for stubbing out and collaborating on documentation content that you want to release at a later date.
-* The `short` parameter determines how the doc appears in the documentation navigation. If you add `short: Clients` to the example client libraries doc, it will show up as `Clients` in the nav.
-
-Here's a YAML metadata example with optional parameters:
-
-```yaml
----
-title: containerd client libraries
-short: Clients
-weight: 5
-description: Use containerd in conjunction with a variety of programming languages
-draft: true
----
+```bash
+make production-build
 ```
 
-### Admonition blocks
+## 同步上游文档
 
-There are five admonition blocks available for the containerd docs:
+上游文档在 [containerd/containerd 的 docs 目录](https://github.com/containerd/containerd/tree/main/docs)，
+通过 git submodule 引入。**重新导入会覆盖掉译文**，所以它不是构建步骤，需要
+手动执行：
 
-* `info` (blue)
-* `success` (green)
-* `warning` (yellow)
-* `danger` (red)
-* `requirement` (purple)
+```bash
+make materialize-docs
+```
 
-To use an admonition block (in this case a success block):
+`materialize-docs` 只从已检出的 submodule 复制，不联网、不需要 rsync，Windows
+的 Git Bash 下也能跑。要连带更新 submodule 到上游最新，用上游原版的
+`make refresh-docs`（需要 rsync）。
+
+导入之后 `content/docs/2.3/` 会退回英文，需要按翻译约定重新翻译，再用
+`check-anchors.py` 核对。
+
+## Admonition 块
+
+文档里可用五种提示块：`info`（蓝）、`success`（绿）、`warning`（黄）、
+`danger`（红）、`requirement`（紫）。
 
 ```
-Here is some normal documentation.
+这里是正文。
 
 {{< success >}}
-And here is a green "success" block
+这里是一个绿色的 success 块
 {{< /success >}}
 ```
 
-> You can use Markdown inside of admonition blocks.
+## 检查链接
 
-## Checking links
+```bash
+make check-links
+```
 
-To check the site's internal links for 404s and other issues, run `make check-links`. This deletes the `public` directory, builds the production version of the site, and checks the output.
+删除 `public/`、构建生产版本，然后用 htmltest 检查输出中的 404 等问题。
+
+## 上游文档的写法
+
+本仓库不接受直接新增文档——文档的唯一来源是 containerd/containerd 仓库的
+`docs/` 目录。页面 front matter 支持 `title`、`weight`、`description`、
+`draft`、`short` 等参数，详见
+[上游 README](https://github.com/containerd/containerd.io/blob/main/README.md)。

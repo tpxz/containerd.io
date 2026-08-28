@@ -12,27 +12,41 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+DEPLOY_HOST ?= mycaddy
+DEPLOY_PATH ?= /srv/docs/containerd.io
+
 clean:
 	rm -rf public resources
 
+# Re-imports the English docs from the submodules. This OVERWRITES the Chinese
+# translations under content/docs/, so unlike upstream it is NOT a build step:
+# run it by hand when picking up a new upstream release, then re-translate.
 refresh-docs:
 	./tools/refresh-docs.sh
 
-serve: refresh-docs
+# Same import, but without touching the submodules and without needing rsync,
+# so it also works on Git Bash / MSYS2. Same warning as above.
+materialize-docs:
+	./tools/materialize-docs.sh
+
+serve:
 	hugo server \
 		--buildDrafts \
 		--buildFuture \
 		--disableFastRender
 
-production-build: refresh-docs
+production-build:
 	hugo \
 	--minify
 
-preview-build: refresh-docs
+preview-build:
 	hugo \
 		--baseURL $(DEPLOY_PRIME_URL) \
 		--buildDrafts \
 		--buildFuture
+
+deploy: clean production-build
+	./tools/deploy.sh $(DEPLOY_HOST) $(DEPLOY_PATH)
 
 install-link-checker:
 	curl https://raw.githubusercontent.com/wjdp/htmltest/master/godownloader.sh | bash

@@ -1,4 +1,4 @@
-{{- $inServerMode := .Site.IsServer }}
+{{- $inServerMode := hugo.IsServer }}
 {{- $jsFiles := .Site.Params.js }}
 {{- range $jsFiles }}
 {{- $path := printf "js/%s.js" . }}

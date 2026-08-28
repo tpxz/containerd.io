@@ -1,59 +1,59 @@
 ---
-title: Scope and principles
+title: 范围与原则
 ---
 
-Having a clearly defined scope of a project is important for ensuring consistency and focus.
-These following criteria will be used when reviewing pull requests, features, and changes for the project before being accepted.
+明确定义项目的范围，对于保证一致性和专注度非常重要。
+在评审项目的 pull request、功能和改动是否被接受时，会使用以下标准。
 
-### Components
+### 组件 {#components}
 
-Components should not have tight dependencies on each other so that they are able to be used independently.
-The APIs for images and containers should be designed in a way that when used together the components have a natural flow but still be useful independently.
+各组件之间不应有紧密的依赖关系，这样它们才能被独立使用。
+image 和 container 的 API 应当这样设计：组合使用时有自然的流程，单独使用时同样有价值。
 
-An example for this design can be seen with the overlay filesystems and the container execution layer.
-The execution layer and overlay filesystems can be used independently but if you were to use both, they share a common `Mount` struct that the filesystems produce and the execution layer consumes.
+这种设计的一个例子可以从 overlay 文件系统和容器执行层中看到。
+执行层和 overlay 文件系统可以独立使用，但如果两者一起使用，它们会共享一个公共的 `Mount` 结构体，由文件系统产生、由执行层消费。
 
-### Primitives
+### 原语 {#primitives}
 
-containerd should expose primitives to solve problems instead of building high level abstractions in the API.
-A common example of this is how build would be implemented.
-Instead of having a build API in containerd we should expose the lower level primitives that allow things required in build to work.
-Breaking up the filesystem APIs to allow snapshots, copy functionality, and mounts allow people implementing build at the higher levels with more flexibility.
+containerd 应当暴露解决问题的原语，而不是在 API 中构建高层抽象。
+一个常见的例子是 build 会如何实现。
+我们不应在 containerd 中提供 build API，而应暴露更底层的原语，让 build 所需的能力得以实现。
+把文件系统 API 拆分为 snapshot、copy 功能和 mount，可以让在更高层实现 build 的人拥有更大的灵活性。
 
-### Extensibility and Defaults
+### 可扩展性与默认实现 {#extensibility-and-defaults}
 
-For the various components in containerd there should be defined extension points where implementations can be swapped for alternatives.
-The best example of this is that containerd will use `runc` from OCI as the default runtime in the execution layer but other runtimes conforming to the OCI Runtime specification can be easily added to containerd.
+对于 containerd 中的各个组件，都应当定义扩展点，使具体实现可以被替换为其他方案。
+最好的例子是：containerd 会使用来自 OCI 的 `runc` 作为执行层的默认运行时，但其他符合 OCI Runtime 规范的运行时也可以很容易地加入 containerd。
 
-containerd will come with a default implementation for the various components.
-These defaults will be chosen by the maintainers of the project and should not change unless better tech for that component comes out.
-Additional implementations will not be accepted into the core repository and should be developed in a separate repository not maintained by the containerd maintainers.
+containerd 会为各个组件自带一个默认实现。
+这些默认实现由项目的 maintainer 选定，除非该组件出现了更好的技术，否则不应更改。
+额外的实现不会被接受进核心仓库，而应在一个不由 containerd maintainer 维护的独立仓库中开发。
 
 
-## Scope
+## 范围 {#scope}
 
-The following table specifies the various components of containerd and general features of container runtimes.
-The table specifies whether or not the feature/component is in or out of scope.
+下表列出了 containerd 的各个组件以及容器运行时的一般性功能。
+表中标明了该功能/组件是否在范围内。
 
-| Name | Description | In/Out | Reason |
+| 名称 | 描述 | 在/不在范围内 | 原因 |
 |------------------------------|--------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| execution | Provide an extensible execution layer for executing a container | in | Create,start, stop pause, resume exec, signal, delete |
-| cow filesystem | Built in functionality for overlay, aufs, and other copy on write filesystems for containers | in |  |
-| distribution | Having the ability to push and pull images as well as operations on images as a first class API object | in | containerd will fully support the management and retrieval of images |
-| metrics | container-level metrics, cgroup stats, and OOM events | in |
-| networking | creation and management of network interfaces | out | Networking will be handled and provided to containerd via higher level systems. |
-| build | Building images as a first class API | out | Build is a higher level tooling feature and can be implemented in many different ways on top of containerd |
-| volumes | Volume management for external data | out | The API supports mounts, binds, etc where all volumes type systems can be built on top of containerd. |
-| logging | Persisting container logs | out | Logging can be build on top of containerd because the container’s STDIO will be provided to the clients and they can persist any way they see fit. There is no io copying of container STDIO in containerd. |
+| execution | 提供可扩展的执行层来执行容器 | 在 | Create、start、stop、pause、resume、exec、signal、delete |
+| cow filesystem | 为容器内置 overlay、aufs 及其他写时复制文件系统的功能 | 在 |  |
+| distribution | 具备 push 和 pull image 的能力，并将 image 上的操作作为一等 API 对象 | 在 | containerd 将全面支持 image 的管理与获取 |
+| metrics | 容器级别的指标、cgroup 统计信息和 OOM 事件 | 在 |
+| networking | 网络接口的创建与管理 | 不在 | 网络将由更高层的系统处理并提供给 containerd。 |
+| build | 将构建 image 作为一等 API | 不在 | build 是更高层的工具功能，可以在 containerd 之上以多种不同方式实现 |
+| volumes | 对外部数据的卷管理 | 不在 | API 支持 mount、bind 等，各种卷类型的系统都可以构建在 containerd 之上。 |
+| logging | 持久化容器日志 | 不在 | 日志可以构建在 containerd 之上，因为容器的 STDIO 会提供给客户端，客户端可以按自己认为合适的方式持久化。containerd 中不存在对容器 STDIO 的 io 复制。 |
 
 
-containerd is scoped to a single host and makes assumptions based on that fact.
-It can be used to build things like a node agent that launches containers but does not have any concepts of a distributed system.
+containerd 的范围限定在单台主机，并基于这一事实做出各种假设。
+它可以用来构建诸如启动容器的节点代理之类的东西，但它本身不包含任何分布式系统的概念。
 
-containerd is designed to be embedded into a larger system, hence it only includes a barebone CLI (`ctr`) specifically for development and debugging purpose, with no mandate to be human-friendly, and no guarantee of interface stability over time.
+containerd 的设计目标是嵌入到更大的系统中，因此它只包含一个极简的 CLI（`ctr`），专门用于开发和调试，既不以对人友好为目标，也不保证接口随时间保持稳定。
 
-### How is the scope changed?
+### 范围如何变更？ {#how-is-the-scope-changed}
 
-The scope of this project is a whitelist.
-If it's not mentioned as being in scope, it is out of scope.
-For the scope of this project to change it requires a 100% vote from all maintainers of the project.
+本项目的范围是一份白名单。
+如果某项内容没有被提及在范围内，那它就不在范围内。
+要变更本项目的范围，需要项目全体 maintainer 100% 投票通过。

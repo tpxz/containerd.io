@@ -1,32 +1,32 @@
 ---
-title: containerd downloads
+title: containerd 下载
 ---
 
-containerd [releases](#releases) can be downloaded in each of the following ways:
+containerd [发布版本](#releases)可以通过以下任一方式下载：
 
-* As a tarball containing all containerd binaries (`containerd`, `ctr`, etc.)
-* As a zip file containing the source code
-* As a tarball containing the source code
+* 包含全部 containerd 二进制文件（`containerd`、`ctr` 等）的 tarball
+* 包含源代码的 zip 文件
+* 包含源代码的 tarball
 
 {{< info >}}
-For a more comprehensive guide to installing and running containerd, see the [Getting started](https://github.com/containerd/containerd/blob/main/docs/getting-started.md) guide.
+关于安装和运行 containerd 的更完整指南，请参阅 [Getting started](https://github.com/containerd/containerd/blob/main/docs/getting-started.md) 指南。
 {{< /info >}}
 
-## Installing binaries
+## 安装二进制文件 {#installing-binaries}
 
-To install the binaries for containerd version **{{< latest >}}** (latest), click on the **Binaries (.tar.gz)** button for that version in the [Releases](#releases) table below. That will copy the tarball URL to your clipboard. Use [`wget`](https://www.gnu.org/software/wget/) to download the tarball and untar it.
+要安装 containerd **{{< latest >}}**（最新版本）的二进制文件，请在下方[发布版本](#releases)表格中点击该版本对应的<strong>二进制包（.tar.gz）</strong>按钮。这会把 tarball 的 URL 复制到你的剪贴板。使用 [`wget`](https://www.gnu.org/software/wget/) 下载该 tarball 并解压。
 
 ```shell
 wget https://github.com/containerd/containerd/releases/download/v{{< latest >}}/containerd-{{< latest >}}-linux-amd64.tar.gz
 tar xvf containerd-{{< latest >}}-linux-amd64.tar.gz
 ```
 
-## Releases
+## 发布版本 {#releases}
 
-The table below lists recent releases of containerd.
+下表列出了 containerd 最近的发布版本。
 
 {{< success >}}
-Clicking on the buttons in the **Copy link** column in the middle will copy the URL of the ZIP file or tarball into your clipboard. Clicking on the buttons in the **Direct download** column on the right will initiate a download of the ZIP file or tarball.
+点击中间<strong>复制链接</strong>列中的按钮，会把 ZIP 文件或 tarball 的 URL 复制到你的剪贴板。点击右侧<strong>直接下载</strong>列中的按钮，会直接开始下载 ZIP 文件或 tarball。
 {{< /success >}}
 
 {{< releases >}}

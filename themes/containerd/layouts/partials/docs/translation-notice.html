@@ -1,0 +1,18 @@
+{{- /*
+  Banner telling the reader whether the version they are looking at has been
+  translated. Versions listed in params.versions.translated are Chinese; every
+  other version is still served as the original English text.
+*/ -}}
+{{- $xVersion := partial "docs/version.html" . -}}
+{{- if ne $xVersion "" -}}
+  {{- $latest := .Site.Params.versions.latestdir -}}
+  {{- if in .Site.Params.versions.translated $xVersion -}}
+    <div class="notification is-info is-light is-size-7 py-2 px-3 mb-4">
+      非官方机器翻译，可能存在错漏，请以<a href="{{ .Site.Params.upstreamUrl }}" target="_blank" rel="noopener">英文原文</a>为准。
+    </div>
+  {{- else -}}
+    <div class="notification is-warning is-light is-size-7 py-2 px-3 mb-4">
+      本版本（{{ $xVersion }}）尚未翻译，以下为英文原文。已翻译的版本：<a href="{{ printf "docs/%s/" $latest | relURL }}">{{ $latest }}</a>。
+    </div>
+  {{- end -}}
+{{- end -}}

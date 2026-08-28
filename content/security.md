@@ -1,22 +1,21 @@
 ---
-title: Security and audits
+title: 安全与审计
 ---
 
-The containerd project has a significant focus on the security of the container runtime layer on which so many
-other software systems depend. We have a clear and well-documented security process and use GitHub security
-features and their CVE numbering authority to properly disclose any identified and verified vulnerabilities.
+containerd 项目高度关注容器运行时层的安全性，因为有大量其他软件系统依赖于这一层。
+我们有一套清晰且文档完善的安全流程，并利用 GitHub 的安全功能及其 CVE 编号授权机构，
+来妥善披露已识别并确认的漏洞。
 
-### Reporting security issues
+### 报告安全问题 {#reporting-security-issues}
 
-Please follow the project's reporting process outlined in [SECURITY.md](https://github.com/containerd/project/blob/main/SECURITY.md) within the `containerd/project` GitHub repository.
+请遵循 `containerd/project` GitHub 仓库中 [SECURITY.md](https://github.com/containerd/project/blob/main/SECURITY.md) 所描述的项目报告流程。
 
-### Security audits
+### 安全审计 {#security-audits}
 
-Security audits are performed from time to time for the project, enabled by investment from the CNCF or other
-interested parties. When public reports are published as a result of these audits we will publish them
-in the following table.
+在 CNCF 或其他相关方的投入支持下，项目会不定期进行安全审计。当这些审计产出的公开报告
+发布时，我们会将它们发布在下表中。
 
-| Name/Link | Description | Date |
+| 名称/链接 | 描述 | 日期 |
 |---------------------------------------|-------------------------------------------------------------------|--------|
-| Fuzzing audit - [ADA-fuzzing-audit-21-22.pdf](/img/ADA-fuzzing-audit-21-22.pdf) | Fuzzing audit funded by the CNCF, audit by Ada Logics | March 2023 |
-| CNCF Graduated Project audit - [SECURITY_AUDIT.pdf](/img/SECURITY_AUDIT.pdf) | Security audit funded by the CNCF, audit by Cure53 | Nov 2018 |
+| Fuzzing 审计 - [ADA-fuzzing-audit-21-22.pdf](../img/ADA-fuzzing-audit-21-22.pdf) | 由 CNCF 出资的 fuzzing 审计，由 Ada Logics 执行 | 2023 年 3 月 |
+| CNCF 毕业项目审计 - [SECURITY_AUDIT.pdf](../img/SECURITY_AUDIT.pdf) | 由 CNCF 出资的安全审计，由 Cure53 执行 | 2018 年 11 月 |

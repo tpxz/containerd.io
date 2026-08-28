@@ -1,17 +1,14 @@
 {{- $currentUrl := .RelPermalink }}
-{{- $parts := split (trim .RelPermalink "/") "/" }}
-{{- $xVersion := "" }}
-{{- if gt (len $parts) 1 }}
-  {{- $xVersion = index $parts 1 }}
-{{- end }}
-{{- $matchPath := cond (eq $xVersion "") "^/docs/.*" (printf "^/docs/%s/.*" $xVersion) }}
+{{- $xVersion := partial "docs/version.html" . }}
+{{- $docsRoot := printf "%sdocs/" site.Home.RelPermalink }}
+{{- $matchPath := cond (eq $xVersion "") (printf "^%s.*" $docsRoot) (printf "^%s%s/.*" $docsRoot $xVersion) }}
 {{- $docs := where site.RegularPages "RelPermalink" "like" $matchPath }}
 
 <div class="buttons mb-4">
   <div class="dropdown">
     <div class="dropdown-trigger">
       <button class="button is-dark" aria-haspopup="true" aria-controls="version-dropdown-menu">
-        <span>Version: {{ if eq $xVersion "main" }}main{{ else }}{{ $xVersion }}{{ end }}</span>
+        <span>版本：{{ if eq $xVersion "main" }}main{{ else }}{{ $xVersion }}{{ end }}</span>
         <span class="icon is-small">
           <i class="fas fa-angle-down" aria-hidden="true"></i>
         </span>
@@ -20,8 +17,8 @@
     <div class="dropdown-menu" id="version-dropdown-menu" role="menu">
       <div class="dropdown-content">
         {{- range .Site.Params.versions.all }}
-        <a class="dropdown-item{{ if eq . $xVersion }} is-active{{ end }}" href="/docs/{{ . }}/">
-          {{ if eq . "main" }}main{{ else }}{{ . }}{{ end }}
+        <a class="dropdown-item{{ if eq . $xVersion }} is-active{{ end }}" href="{{ printf "docs/%s/" . | relURL }}">
+          {{ if eq . "main" }}main{{ else }}{{ . }}{{ end }}{{ if in $.Site.Params.versions.translated . }}（中文）{{ end }}
         </a>
         {{- end }}
       </div>
@@ -30,7 +27,7 @@
 <div class="dropdown">
   <div class="dropdown-trigger">
     <button class="button is-dark" aria-haspopup="true" aria-controls="docs-dropdown-menu">
-      <span>Docs</span>
+      <span>文档</span>
       <span class="icon is-small">
         <i class="fas fa-angle-down" aria-hidden="true"></i>
       </span>
@@ -40,7 +37,7 @@
     <div class="dropdown-content">
 
       {{ if ne $xVersion "" }}
-      {{- $readmeURL := (printf "%s%s%s" "/docs/" $xVersion "/") }}
+      {{- $readmeURL := printf "docs/%s/" $xVersion | relURL }}
       <a href="{{$readmeURL}}" class="dropdown-item{{ if eq .RelPermalink $readmeURL }} is-active{{ end }}">
           README
       </a>
@@ -60,7 +57,7 @@
       <a class="dropdown-item{{ if $isCurrentPage }} is-active{{ end }}" href="{{ .RelPermalink }}">
         {{- $itemTitle := partial "docs/title.html" . -}}
         {{- $parentDir := .CurrentSection -}}
-        {{- $versionRoot := cond (eq $xVersion "") "/docs/" (printf "/docs/%s/" $xVersion) -}}
+        {{- $versionRoot := cond (eq $xVersion "") $docsRoot (printf "%s%s/" $docsRoot $xVersion) -}}
         {{- if and $parentDir (ne $parentDir.RelPermalink $versionRoot) -}}
             {{- $parentTitle := partial "docs/title.html" $parentDir -}}
             {{- $itemTitle = printf "%s: %s" $parentTitle $itemTitle -}}
@@ -78,7 +75,7 @@
   <div class="dropdown-trigger">
     <button class="button is-light">
       <span>
-        Contents
+        目录
       </span>
       <span class="icon is-small">
         <i class="fas fa-angle-down" aria-hidden="true"></i>

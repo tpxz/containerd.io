@@ -1,15 +1,33 @@
-baseURL = "https://containerd.io"
-languageCode = "en-us"
+baseURL = "https://docs.foyoux.dpdns.org:44443/containerd.io/"
+languageCode = "zh-CN"
+languageName = "简体中文"
 title = "containerd"
 pygmentsUseClasses = true
 pygmentsCodefences = true
 enableRobotsTXT = true
-disableKinds = ["taxonomy", "taxonomyTerm"]
+disableKinds = ["taxonomy", "term"]
 theme = "containerd"
 
+# The site is served from the "/containerd.io/" sub-path, so every internal link
+# has to go through relURL/absURL rather than being written root-relative.
+# canonifyURLs stays off on purpose: it would rewrite links against the absolute
+# baseURL and break `hugo server` previews.
+canonifyURLs = false
+
+# Translated headings keep the original English anchor via `{#slug}` so that
+# existing in-page and cross-page links (#getting-started, ...) keep resolving.
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true
+        title = true
+    [markup.goldmark.renderer]
+      unsafe = true
+
 [params]
-description        = "An industry-standard container runtime with an emphasis on simplicity, robustness, and portability"
-googleAnalyticsId  = "UA-71407002-1"
+description        = "一个工业级标准的容器运行时，专注于简洁、健壮与可移植性"
+googleAnalyticsId  = ""
 githubRepo         = "containerd/containerd"
 twitterHandle      = "containerd"
 slackChannel       = "https://slack.containerd.io/"
@@ -21,24 +39,29 @@ monospaceFont      = "Fira Mono"
 fontAwesomeVersion = "7.3.0"
 js = ["tippy-3.1.1", "jquery-3.6.0", "anchor-4.1.1", "clipboard-2.0.0", "app"]
 
+# Non-upstream: this is an unofficial Chinese translation of containerd.io.
+upstreamUrl = "https://containerd.io"
+
 [params.home]
 # These parameters determine the text on the homepage
-subtitle = "An industry-standard container runtime with an emphasis on **simplicity**, **robustness** and **portability**"
-about = "**containerd** is available as a daemon for Linux and Windows. It manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments and beyond."
+subtitle = "一个工业级标准的容器运行时，专注于<strong>简洁</strong>、<strong>健壮</strong>与<strong>可移植性</strong>"
+about = "**containerd** 以守护进程的形式运行在 Linux 和 Windows 上。它负责管理宿主机上容器的完整生命周期：从镜像传输与存储，到容器执行与监管，再到底层存储和网络挂载等等。"
 features = [
-  "OCI Image Spec support",
-  "OCI Runtime Spec support (aka runC)",
-  "Image push and pull support",
-  "Container runtime and lifecycle support",
-  "Network primitives for creation, modification, and deletion of interfaces",
-  "Management of network namespaces containers to join existing namespaces",
-  "Multi-tenant supported with CAS storage for global images"
+  "支持 OCI 镜像规范",
+  "支持 OCI 运行时规范（即 runC）",
+  "支持镜像推送与拉取",
+  "支持容器运行时与生命周期管理",
+  "提供创建、修改、删除网络接口的网络原语",
+  "管理容器的网络命名空间，支持加入已有的命名空间",
+  "基于 CAS 存储的全局镜像，支持多租户",
 ]
 
 [params.versions]
 latest = "2.3.0"
 latestdir = "2.3"
 all = ["2.3", "2.2", "2.1", "1.7", "main"]
+# Only this version has been translated into Chinese; the others are shown as-is.
+translated = ["2.3"]
 
 [[params.fonts]]
 name = "Lato"
@@ -48,6 +71,7 @@ sizes = [300,400,600,700]
 name = "Fira Mono"
 sizes = [300,400,600,700]
 
+# Hugo >= 0.126 folded getjson/getcsv into the "getresource" cache.
 [caches]
-  [caches.getjson]
+  [caches.getresource]
     maxAge = "24h"

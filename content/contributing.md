@@ -1,74 +1,59 @@
 ---
-title: Contributing
+title: 参与贡献
 ---
 
-Contributions should be made via pull requests. Pull requests will be reviewed
-by one or more maintainers and merged when acceptable.
+贡献应当通过 pull request 提交。Pull request 会由一位或多位 maintainer 评审，
+在可接受时被合并。
 
-This project is in an early state, making the impact of contributions much
-greater than at other stages. In this respect, it is important to consider any
-changes or additions for their future impact more so than their current impact.
+本项目尚处于早期阶段，因此贡献带来的影响远大于其他阶段。就这一点而言，评估任何
+改动或新增内容时，考虑其未来的影响比考虑其当下的影响更为重要。
 
-## Successful Changes
+## 让改动被接受 {#successful-changes}
 
-We ask that before contributing, please make the effort to coordinate with the
-maintainers of the project before submitting large or high impact PRs. This
-will prevent you from doing extra work that may or may not be merged.
+在贡献之前，请先花些精力与项目的 maintainer 协调，然后再提交大型或影响面较广的
+PR。这样可以避免你做了额外的工作却最终无法被合并。
 
-PRs that are just submitted without any prior communication will likely be
-summarily closed.
+没有任何事先沟通就直接提交的 PR，很可能会被直接关闭。
 
-While pull requests are the methodology for submitting changes to code, changes
-are much more likely to be accepted if they are accompanied by additional
-engineering work. While we don't define this explicitly, most of these goals
-are accomplished through communication of the design goals and subsequent
-solutions. Often times, it helps to first state the problem before presenting
-solutions.
+虽然 pull request 是提交代码变更的方式，但如果改动同时伴随额外的工程工作，被接受
+的可能性会大得多。我们没有对此作出明确定义，不过这些目标大多是通过沟通设计目标以
+及后续的解决方案来达成的。很多时候，先陈述问题、再给出解决方案会更有帮助。
 
-Typically, the best methods of accomplishing this are to submit an issue,
-stating the problem. This issue can include a problem statement and a
-checklist with requirements. If solutions are proposed, alternatives should be
-listed and eliminated. Even if the criteria for elimination of a solution is
-frivolous, say so.
+通常，达成这一点的最佳方式是提交一个 issue 来陈述问题。这个 issue 可以包含问题
+描述和一份带有需求的清单。如果提出了多种解决方案，应当把备选方案列出来并逐一排除。
+即使排除某个方案的理由很微不足道，也请写出来。
 
-Larger changes typically work best with design documents, similar to those found
-in `design/`. These are focused on providing context to the design at the time
-the feature was conceived and can inform future documentation contributions.
+较大的改动通常配合设计文档效果最好，类似 `design/` 目录中的那些文档。这些文档聚焦
+于提供功能构思时的设计背景，并可以为未来的文档贡献提供参考。
 
-Make sure that new tests are added for bugs in order to catch regressions and tests
-with new features to exercise the new functionality that is added.
+请确保为 bug 添加新的测试以捕获回归，并为新功能添加测试以验证新增的功能。
 
-## Commit Messages
+## 提交信息 {#commit-messages}
 
-There are times for one line commit messages and this is not one of them.
-Commit messages should follow best practices, including explaining the context
-of the problem and how it was solved, including in caveats or follow up changes
-required. They should tell the story of the change and provide readers
-understanding of what led to it.
+有些场合适合写一行的提交信息，但这里不是。提交信息应当遵循最佳实践，包括解释问题
+的背景以及是如何解决的，也包括其中的注意事项或所需的后续改动。提交信息应当讲述这
+次改动的来龙去脉，让读者理解是什么导致了这次改动。
 
-If you're lost about what this even means, please see [How to Write a Git
-Commit Message](http://chris.beams.io/posts/git-commit/) for a start.
+如果你完全不明白这是什么意思，可以先看看
+[How to Write a Git Commit Message](http://chris.beams.io/posts/git-commit/)。
 
-In practice, the best approach to maintaining a nice commit message is to
-leverage a `git add -p` and `git commit --amend` to formulate a solid
-changeset. This allows one to piece together a change, as information becomes
-available.
+在实践中，维护一份好的提交信息的最佳方式是借助 `git add -p` 和
+`git commit --amend` 来打磨出一个扎实的变更集。这样可以随着信息逐渐明朗，一点一点
+地拼出一次改动。
 
-If you squash a series of commits, don't just submit that. Re-write the commit
-message, as if the series of commits was a single stroke of brilliance.
+如果你把一系列提交 squash 成了一个，不要就这么直接提交。请重写提交信息，就好像这
+一系列提交本来就是一气呵成的杰作。
 
-That said, there is no requirement to have a single commit for a PR, as long as
-each commit tells the story. For example, if there is a feature that requires a
-package, it might make sense to have the package in a separate commit then have
-a subsequent commit that uses it.
+话虽如此，一个 PR 并不要求只有一个提交，只要每个提交都讲述了自己的故事即可。例如，
+如果某个功能需要一个新的 package，那么把这个 package 放在一个单独的提交里，再用后
+续的提交来使用它，往往是合理的。
 
-Remember, you're telling part of the story with the commit message. Don't make
-your chapter weird.
+记住，你是在用提交信息讲述故事的一部分。别让你负责的这一章变得奇怪。
 
-## Applying License Header to New Files
+## 为新文件添加许可证头 {#applying-license-header-to-new-files}
 
-If you submit a contribution that adds a new file, please add the license
-header. You can do so manually or use the `ltag` tool:
+如果你提交的贡献新增了文件，请添加许可证头。你可以手动添加，也可以使用 `ltag`
+工具：
 
 
 ```console
@@ -76,17 +61,15 @@ $ go get github.com/kunalkushwaha/ltag
 $ ltag -t ./script/validate/template
 ```
 
-The above will add the appropriate license header to Go language source files,
- Makefiles, Dockerfiles, and shell scripts. New templates will need to be added
- if other kinds of files are added. Please consult the
-documentation at https://github.com/kunalkushwaha/ltag
+上述命令会为 Go 语言源文件、Makefile、Dockerfile 和 shell 脚本添加合适的许可证头。
+如果新增了其他类型的文件，则需要添加新的模板。请参阅
+https://github.com/kunalkushwaha/ltag 上的文档。
 
-## Sign your work
+## 签署你的工作 {#sign-your-work}
 
-The sign-off is a simple line at the end of the explanation for the patch. Your
-signature certifies that you wrote the patch or otherwise have the right to pass
-it on as an open-source patch. The rules are pretty simple: if you can certify
-the below (from [developercertificate.org](http://developercertificate.org/)):
+签署（sign-off）就是在补丁说明末尾添加简单的一行。你的签名证明这个补丁是你自己编写
+的，或者你有权将其作为开源补丁传递出去。规则很简单：只要你能够证明以下内容（来自
+[developercertificate.org](http://developercertificate.org/)）：
 
 ```
 Developer Certificate of Origin
@@ -126,11 +109,11 @@ By making a contribution to this project, I certify that:
     this project or the open source license(s) involved.
 ```
 
-Then you just add a line to every git commit message:
+那么你只需在每条 git 提交信息中加上一行：
 
     Signed-off-by: Joe Smith <joe.smith@email.com>
 
-Use your real name (sorry, no pseudonyms or anonymous contributions.)
+请使用你的真实姓名（抱歉，不接受化名或匿名贡献）。
 
-If you set your `user.name` and `user.email` git configs, you can sign your
-commit automatically with `git commit -s`.
+如果你设置了 git 的 `user.name` 和 `user.email` 配置，就可以用 `git commit -s`
+自动签署提交。

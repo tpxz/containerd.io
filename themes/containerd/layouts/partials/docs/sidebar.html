@@ -1,10 +1,5 @@
 {{- $currentUrl := .RelPermalink }}
-{{- $parts := split (trim .RelPermalink "/") "/" }}
-{{- $xVersion := "" }}
-{{- if gt (len $parts) 1 }}
-  {{- $xVersion = index $parts 1 }}
-{{- end }}
-
+{{- $xVersion := partial "docs/version.html" . }}
 
 <aside class="column is-hidden-touch is-fullheight is-hidden-mobile">
 <ul class="menu-list">
@@ -13,8 +8,8 @@
         <select onchange="window.location.href=this.value">
           {{ $v := $xVersion }}
           {{- range .Site.Params.versions.all }}
-          <option value="/docs/{{ . }}/" {{ if eq . $v }}selected{{ end }}>
-            Version: {{ if eq . "main" }}main{{ else }}{{ . }}{{ end }}
+          <option value="{{ printf "docs/%s/" . | relURL }}" {{ if eq . $v }}selected{{ end }}>
+            版本：{{ if eq . "main" }}main{{ else }}{{ . }}{{ end }}{{ if in $.Site.Params.versions.translated . }}（中文）{{ end }}
           </option>
           {{- end }}
         </select>
@@ -22,7 +17,7 @@
     </li>
 
     {{ if ne $xVersion "" }}
-    {{- $readmeURL := (printf "%s%s%s" "/docs/" $xVersion "/") }}
+    {{- $readmeURL := printf "docs/%s/" $xVersion | relURL }}
     <li>
         <a href="{{$readmeURL}}" class="{{ if eq .RelPermalink $readmeURL }} is-active{{ end }}">
             <span class="icon"><i class="fa fa-info"></i></span> README
